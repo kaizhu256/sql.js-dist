@@ -1,15 +1,16 @@
-# SQLite compiled to javascript
-[![Build Status](https://travis-ci.org/kripken/sql.js.svg?branch=master)](http://travis-ci.org/kripken/sql.js) [![CDNJS version](https://img.shields.io/cdnjs/v/sql.js.svg)](https://cdnjs.com/libraries/sql.js)
+# SQLite compiled to JavaScript
+[![CI status](https://github.com/kripken/sql.js/workflows/CI/badge.svg)](https://github.com/kripken/sql.js/actions)
+[![CDNJS version](https://img.shields.io/cdnjs/v/sql.js.svg)](https://cdnjs.com/libraries/sql.js)
 
 For the impatients, try the demo here: http://kripken.github.io/sql.js/examples/GUI
 
-*sql.js* is a port of [SQLite](http://sqlite.org/about.html) to Webassembly, by compiling the SQLite C code with [Emscripten](http://kripken.github.io/emscripten-site/docs/introducing_emscripten/about_emscripten.html). It uses a [virtual database file stored in memory](https://kripken.github.io/emscripten-site/docs/porting/files/file_systems_overview.html), and thus **doesn't persist the changes** made to the database. However, it allows you to **import** any existing sqlite file, and to **export** the created database as a [javascript typed array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays).
+*sql.js* is a port of [SQLite](http://sqlite.org/about.html) to Webassembly, by compiling the SQLite C code with [Emscripten](http://kripken.github.io/emscripten-site/docs/introducing_emscripten/about_emscripten.html). It uses a [virtual database file stored in memory](https://kripken.github.io/emscripten-site/docs/porting/files/file_systems_overview.html), and thus **doesn't persist the changes** made to the database. However, it allows you to **import** any existing sqlite file, and to **export** the created database as a [JavaScript typed array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays).
 
-There are no C bindings or node-gyp compilation here, sql.js is a simple javascript file, that can be used like any traditional javascript library. If you are building a native application in javascript (using Electron for instance), or are working in node.js, you will likely prefer to use [a native binding of SQLite to javascript](https://www.npmjs.com/package/sqlite3).
+There are no C bindings or node-gyp compilation here, sql.js is a simple JavaScript file, that can be used like any traditional JavaScript library. If you are building a native application in JavaScript (using Electron for instance), or are working in node.js, you will likely prefer to use [a native binding of SQLite to JavaScript](https://www.npmjs.com/package/sqlite3).
 
 SQLite is public domain, sql.js is MIT licensed.
 
-Sql.js predates WebAssembly, and thus started as an [asm.js](https://en.wikipedia.org/wiki/Asm.js) project. It still supports asm.js for backwards compatability.
+Sql.js predates WebAssembly, and thus started as an [asm.js](https://en.wikipedia.org/wiki/Asm.js) project. It still supports asm.js for backwards compatibility.
 
 ## Version of binaries
 Sql.js was last built with:
@@ -22,11 +23,11 @@ A [full documentation](http://kripken.github.io/sql.js/documentation/#http://kri
 ## Usage
 
 ```javascript
-var initSqlJs = require('sql-wasm.js');
+var initSqlJs = require('sql.js');
 // or if you are in a browser:
-//var initSqlJs = window.initSqlJs;
+// var initSqlJs = window.initSqlJs;
 
-initSqlJs().then(function(SQL){
+initSqlJs().then(SQL => {
 
   // Create a database
   var db = new SQL.Database();
@@ -57,7 +58,7 @@ initSqlJs().then(function(SQL){
   stmt.bind([0, 'hello']);
   while (stmt.step()) console.log(stmt.get()); // Will print [0, 'hello']
 
-  // You can also use javascript functions inside your SQL code
+  // You can also use JavaScript functions inside your SQL code
   // Create the js function you need
   function add(a, b) {return a+b;}
   // Specifies the SQL function's name, the number of it's arguments, and the js function to use
@@ -89,7 +90,7 @@ The test files provide up to date example of the use of the api.
   <script src='/dist/sql-wasm.js'></script>
   <script>
     config = {
-      locateFile: url => `/dist/${filename}` 
+      locateFile: filename => `/dist/${filename}` 
     }
     // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.
     // We must specify this locateFile function if we are loading a wasm file from anywhere other than the current html page's folder.
@@ -114,12 +115,12 @@ The test files provide up to date example of the use of the api.
     });
   </script>
   <body>
-    Output is in Javscript console
+    Output is in Javascript console
   </body>
 </html>
 ```
 
-#### Creating a database from a file choosen by the user
+#### Creating a database from a file chosen by the user
 `SQL.Database` constructor takes an array of integer representing a database file as an optional parameter.
 The following code uses an HTML input as the source for loading a database:
 ```javascript
@@ -220,7 +221,7 @@ See [examples/GUI/gui.js](examples/GUI/gui.js) for a full working example.
 
 ## Flavors/versions Targets/Downloads
 
-This library includes both WebAssembly and asm.js versions of Sqlite. (WebAssembly is the newer, preferred way to compile to Javascript, and has superceded asm.js. It produces smaller, faster code.) Asm.js versions are included for compatibility.
+This library includes both WebAssembly and asm.js versions of Sqlite. (WebAssembly is the newer, preferred way to compile to JavaScript, and has superceded asm.js. It produces smaller, faster code.) Asm.js versions are included for compatibility.
 
 ## Upgrading from 0.x to 1.x
 
@@ -237,7 +238,7 @@ So in the past, you would:
 or:
 ```javascript
 var SQL = require('sql.js');
-var db = new QL.Database();
+var db = new SQL.Database();
 //...
 ```
 
@@ -263,7 +264,7 @@ initSqlJs().then(function(SQL){
 `NOTHING` is now a reserved word in SQLite, whereas previously it was not. This could cause errors like `Error: near "nothing": syntax error`
 
 ### Downloading/Using: ###
-Although asm.js files were distributed as a single Javascript file, WebAssembly libraries are most efficiently distributed as a pair of files, the `.js`  loader and the `.wasm` file, like [dist/sql-wasm.js]([dist/sql-wasm.js]) and [dist/sql-wasm.wasm]([dist/sql-wasm.wasm]). The `.js` file is reponsible for wrapping/loading the `.wasm` file. 
+Although asm.js files were distributed as a single Javascript file, WebAssembly libraries are most efficiently distributed as a pair of files, the `.js`  loader and the `.wasm` file, like [dist/sql-wasm.js]([dist/sql-wasm.js]) and [dist/sql-wasm.wasm]([dist/sql-wasm.wasm]). The `.js` file is responsible for wrapping/loading the `.wasm` file. 
 
 
 
@@ -271,7 +272,7 @@ Although asm.js files were distributed as a single Javascript file, WebAssembly 
 ## Versions of sql.js included in `dist/`
  - `sql-wasm.js` : The Web Assembly version of Sql.js. Minified and suitable for production. Use this. If you use this, you will need to include/ship `sql-wasm.wasm` as well.
  - `sql-wasm-debug.js` : The Web Assembly, Debug version of Sql.js. Larger, with assertions turned on. Useful for local development. You will need to include/ship `sql-wasm-debug.wasm` if you use this.
- - `sql-asm.js` : The older asm.js version of Sql.js. Slower and larger. Provided for compatiblity reasons.
+ - `sql-asm.js` : The older asm.js version of Sql.js. Slower and larger. Provided for compatibility reasons.
  - `sql-asm-memory-growth.js` : Asm.js doesn't allow for memory to grow by default, because it is slower and de-optimizes. If you are using sql-asm.js and you see this error (`Cannot enlarge memory arrays`), use this file.
  - `sql-asm-debug.js` : The _Debug_ asm.js version of Sql.js. Use this for local development.
  - `worker.*` - Web Worker versions of the above libraries. More limited API. See [examples/GUI/gui.js](examples/GUI/gui.js) for a good example of this.
