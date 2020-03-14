@@ -145,7 +145,7 @@ xhr.open('GET', '/path/to/database.sqlite', true);
 xhr.responseType = 'arraybuffer';
 
 xhr.onload = e => {
-  var uInt8Array = new Uint8Array(this.response);
+  var uInt8Array = new Uint8Array(xhr.response);
   var db = new SQL.Database(uInt8Array);
   var contents = db.exec("SELECT * FROM my_table");
   // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
@@ -269,7 +269,8 @@ Although asm.js files were distributed as a single Javascript file, WebAssembly 
 
 
 
-## Versions of sql.js included in `dist/`
+## Versions of sql.js included in the [distributed artifacts](https://github.com/kripken/sql.js/releases/latest)
+For each [relase](https://github.com/kripken/sql.js/releases/), you will find a file called `sqljs.zip` in the *release assets*. It will contain:
  - `sql-wasm.js` : The Web Assembly version of Sql.js. Minified and suitable for production. Use this. If you use this, you will need to include/ship `sql-wasm.wasm` as well.
  - `sql-wasm-debug.js` : The Web Assembly, Debug version of Sql.js. Larger, with assertions turned on. Useful for local development. You will need to include/ship `sql-wasm-debug.wasm` if you use this.
  - `sql-asm.js` : The older asm.js version of Sql.js. Slower and larger. Provided for compatibility reasons.
